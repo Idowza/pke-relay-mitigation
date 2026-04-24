@@ -44,7 +44,6 @@ def run_monte_carlo():
 
     for dist in test_distances:
         # --- Scenario A: Normal Authentication ---
-        # The owner is actually standing at 'dist'
         reg0, reg1 = precomputation_phase()
         total_time_norm = rapid_exchange_phase(reg0, reg1, dist, attacker_delay=0.0)
         est_dist_norm = SPEED_OF_LIGHT * ((total_time_norm / NUM_BITS) - T_PROC_BASE) / 2
@@ -53,7 +52,6 @@ def run_monte_carlo():
         normal_results_est.append(est_dist_norm)
 
         # --- Scenario B: Relay Attack ---
-        # The owner is at 'dist', but attackers use hardware (e.g. 1.5 microseconds delay per bit)
         hardware_delay = 1.5e-6 
         total_time_atk = rapid_exchange_phase(reg0, reg1, dist, attacker_delay=hardware_delay)
         est_dist_atk = SPEED_OF_LIGHT * ((total_time_atk / NUM_BITS) - T_PROC_BASE) / 2
@@ -73,7 +71,6 @@ def plot_results(n_dist, n_est, a_dist, a_est):
     
     # Plot the Threshold Zones
     plt.axhline(y=THRESHOLD_DISTANCE, color='green', linestyle='--', linewidth=2, label='d_max Threshold (2.0m)')
-    plt.axvline(x=THRESHOLD_DISTANCE, color='gray', linestyle=':', linewidth=1)
     
     # Shade the "Access Granted" area
     plt.fill_between([0, 100], 0, THRESHOLD_DISTANCE, color='green', alpha=0.1)
@@ -83,15 +80,18 @@ def plot_results(n_dist, n_est, a_dist, a_est):
     plt.xlabel('Actual Physical Distance of Key Fob (meters)', fontsize=12)
     plt.ylabel('Distance Estimated by Verifier via RTT (meters)', fontsize=12)
     plt.xlim(0, 100)
-    plt.ylim(0, max(max(n_est), 10) * 1.1) # Scale Y axis nicely, but cap lower bound
+    
+    # [FIXED LINE] Scale Y axis to fit the highest red dots (attacker data)
+    plt.ylim(0, max(max(a_est), max(n_est)) * 1.1) 
+    
     plt.legend(loc='upper left', fontsize=10)
     plt.grid(True, linestyle='--', alpha=0.5)
     
     # Save the figure to be included in your LaTeX document
     plt.tight_layout()
-    plt.savefig('rtt_simulation_results.png', dpi=300)
+    plt.savefig('rtt_simulation_results_fixed.jpg', dpi=300)
     plt.show()
-    print("Plot saved as 'rtt_simulation_results.png'")
+    print("Plot saved as 'rtt_simulation_results_fixed.jpg'")
 
 if __name__ == "__main__":
     n_dist, n_est, a_dist, a_est = run_monte_carlo()
