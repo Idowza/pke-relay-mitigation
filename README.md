@@ -13,10 +13,12 @@ This project implements a simulation of a Distance Bounding Protocol (based on t
 
 ## Repository Contents
 - `distance_bounding_sim.py`: A Python script simulating the rapid bit-exchange, RTT measurement, and distance-threshold validation logic.
-- `progress_report.tex`: The IEEE double-column LaTeX document detailing the literature survey, mathematical system model, and proposed methodology.
+- `distance_bounding_sim_v2.py`: An enhanced Monte Carlo simulation that runs 500 iterations of legitimate and attack scenarios, generating an analytical scatter plot using `numpy` and `matplotlib`.
 
 ## How to Run the Simulation
-The simulation is built using Python's standard library and does not require any external dependencies or pip installations.
+
+### Basic Simulation (`distance_bounding_sim.py`)
+This simulation is built using Python's standard library and does not require any external dependencies or pip installations.
 
 1. Clone this repository to your local machine.
 2. Navigate to the repository directory in your terminal.
@@ -26,6 +28,19 @@ The simulation is built using Python's standard library and does not require any
    ```
 
 The console will output the expected RTT and distance estimations for both a standard authentication scenario and a long-range relay attack.
+
+### Monte Carlo Simulation (`distance_bounding_sim_v2.py`)
+This simulation runs a larger set of iterations across a range of distances to graph the results. 
+
+1. Install the required external dependencies:
+   ```bash
+   pip install numpy matplotlib
+   ```
+2. Execute the script:
+   ```bash
+   python distance_bounding_sim_v2.py
+   ```
+This will output a plot visualizing the relationship between the actual physical distance and the estimated RTT distance.
 
 ## Author
 Steven Iden - Department of Electrical Engineering, University of North Dakota
